@@ -194,7 +194,7 @@ def main():
                             g_renderer.update_gaussian_data(gaussians)
                             g_renderer.sort_and_update(g_camera)
                         except RuntimeError as e:
-                            pass
+                            print(e)
                 
                 # camera fov
                 changed, g_camera.fovy = imgui.slider_float(

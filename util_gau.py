@@ -1,6 +1,7 @@
 import numpy as np
-from plyfile import PlyData
+from plyfile import PlyData, PlyElement
 from dataclasses import dataclass
+import mmap
 
 @dataclass
 class GaussianData:
@@ -61,7 +62,10 @@ def naive_gaussian():
 
 def load_ply(path):
     max_sh_degree = 3
-    plydata = PlyData.read(path)
+    with open(path, 'rb') as f:
+        mm = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+        plydata = PlyData.read(mm)
+#    plydata = PlyData.read(path)
     xyz = np.stack((np.asarray(plydata.elements[0]["x"]),
                     np.asarray(plydata.elements[0]["y"]),
                     np.asarray(plydata.elements[0]["z"])),  axis=1)
